@@ -56,44 +56,43 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
 
 ## Raw Logs
 ### Ubuntu – Raw Logs
-type=USER_CMD msg=audit(1767183111.412:367):
-cmd=7472756E63617465202D732030202F7661722F6C6F672F617574682E6C6F67
-exe="/usr/bin/sudo" res=success
-UID="lucifer" AUID="lucifer"
+    type=USER_CMD msg=audit(1767183111.412:367):
+    cmd=7472756E63617465202D732030202F7661722F6C6F672F617574682E6C6F67
+    exe="/usr/bin/sudo" res=success
+    UID="lucifer" AUID="lucifer"
 
-type=SERVICE_STOP msg=audit(1767183125.229:376):
-unit=rsyslog comm="systemd" res=success
-UID="root"
+    type=SERVICE_STOP msg=audit(1767183125.229:376):
+    unit=rsyslog comm="systemd" res=success
+    UID="root"
 
-2025-12-31T17:42:05.226419+05:30 lucifer-VirtualBox rsyslogd:
-exiting on signal 15
+    2025-12-31T17:42:05.226419+05:30 lucifer-VirtualBox rsyslogd:
+    exiting on signal 15
 
-2025-12-31T17:42:05.225324+05:30 lucifer-VirtualBox systemd[1]:
-Stopping rsyslog.service - System Logging Service...
+    2025-12-31T17:42:05.225324+05:30 lucifer-VirtualBox systemd[1]:
+    Stopping rsyslog.service - System Logging Service...
 
-2025-12-31T17:42:05.562552+05:30 lucifer-VirtualBox systemd[1]:
-Started rsyslog.service - System Logging Service.
+    2025-12-31T17:42:05.562552+05:30 lucifer-VirtualBox systemd[1]:
+    Started rsyslog.service - System Logging Service.
 
-type=SERVICE_START msg=audit(1767183125.562:378):
-unit=rsyslog comm="systemd" res=success
-UID="root"
-
-sudo:  lucifer : USER=root ; COMMAND=/usr/bin/systemctl restart rsyslog
+    type=SERVICE_START msg=audit(1767183125.562:378):
+    unit=rsyslog comm="systemd" res=success
+    UID="root"
+    sudo:  lucifer : USER=root ; COMMAND=/usr/bin/systemctl restart rsyslog
 
 ### Windows – Raw Logs
-EventCode=1102
-LogName=Security
-Message=The audit log was cleared.
-Account Name: Gowtham
+    EventCode=1102
+    LogName=Security
+    Message=The audit log was cleared.
+    Account Name: Gowtham
 
-EventCode=104
-LogName=System
-Message=The System log file was cleared.
+    EventCode=104
+    LogName=System
+    Message=The System log file was cleared.
 
-EventCode=4688
-New Process Name: C:\Windows\System32\wevtutil.exe
-Process Command Line: wevtutil cl System
-Creator Process Name: C:\Windows\System32\cmd.exe
+    EventCode=4688
+    New Process Name: C:\Windows\System32\wevtutil.exe
+    Process Command Line: wevtutil cl System
+    Creator Process Name: C:\Windows\System32\cmd.exe
 
 ## Log Explanation
 ### Ubuntu
@@ -114,13 +113,13 @@ Creator Process Name: C:\Windows\System32\cmd.exe
 
 ## Splunk Detection Queries
 ### Ubuntu
-index=linux_index sourcetype=linux_audit
-| search ("truncate" OR "SERVICE_STOP" OR "SERVICE_START")
-| table _time host uid cmd res
+    index=linux_index sourcetype=linux_audit
+    | search ("truncate" OR "SERVICE_STOP" OR "SERVICE_START")
+    | table _time host uid cmd res
 
 ### Windows
-index=windows_index EventCode IN (1102,104)
-| table _time host Account_Name EventCode Message
+    index=windows_index EventCode IN (1102,104)
+    | table _time host Account_Name EventCode Message
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
