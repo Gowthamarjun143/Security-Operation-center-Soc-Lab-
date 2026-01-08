@@ -53,34 +53,34 @@ This simulates failed graphical authentication attempts handled by PAM modules.
 
 ## Logs Generated
 ### Windows – Raw Log Output
-LogName=Security
-EventCode=4625
-SourceName=Microsoft Windows security auditing.
-ComputerName=DESKTOP-HFGS62A
-Keywords=Audit Failure
-TaskCategory=Logon
-Message=An account failed to log on.
+    LogName=Security
+    EventCode=4625
+    SourceName=Microsoft Windows security auditing. 
+    ComputerName=DESKTOP-HFGS62A
+    Keywords=Audit Failure
+    TaskCategory=Logon
+    Message=An account failed to log on.
 
-Subject:
-Security ID: S-1-5-18
-Account Name: DESKTOP-HFGS62A$
-Account Domain: WORKGROUP
+    Subject:
+    Security ID: S-1-5-18
+    Account Name: DESKTOP-HFGS62A$
+    Account Domain: WORKGROUP
 
-Logon Type: 2
+    Logon Type: 2
 
-Account For Which Logon Failed:
-Account Name: Gowtham
+    Account For Which Logon Failed:
+    Account Name: Gowtham
 
-Failure Information:
-Failure Reason: Unknown user name or bad password.
-Status: 0xC000006D
-Sub Status: 0xC000006A
+    Failure Information:
+    Failure Reason: Unknown user name or bad password.
+    Status: 0xC000006D
+    Sub Status: 0xC000006A
 
-Process Information:
-Caller Process Name: C:\Windows\System32\svchost.exe
+    Process Information:
+    Caller Process Name: C:\Windows\System32\svchost.exe
 
-Network Information:
-Source Network Address: 127.0.0.1
+    Network Information:
+    Source Network Address: 127.0.0.1
 
 
 ---
@@ -102,9 +102,9 @@ This event confirms failed interactive authentication attempts on a local Window
 
 ### Ubuntu – Raw Log Output
 
-2025-12-24T11:56:41.971945+05:30 lucifer-VirtualBox gdm-password]:
-pam_unix(gdm-password:auth): authentication failure;
-logname= uid=0 euid=0 tty=/dev/tty1 ruser= rhost= user=lucifer
+    2025-12-24T11:56:41.971945+05:30 lucifer-VirtualBox gdm-password]:
+    pam_unix(gdm-password:auth): authentication failure;
+    logname= uid=0 euid=0 tty=/dev/tty1 ruser= rhost= user=lucifer
 
 
 ---
