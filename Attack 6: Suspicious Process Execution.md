@@ -114,14 +114,16 @@ This event confirms execution of a masqueraded binary using a deceptive system-l
 
 ## Detection Logic (Splunk SPL)
 ### Ubuntu – Suspicious Binary Execution
-index=linux_index sourcetype=linux_audit OR sourcetype=linux_secure
-| search exe="/tmp/*" OR exe="/usr/bin/*"
-| stats count by host, user, exe, comm
+
+    index=linux_index sourcetype=linux_audit OR sourcetype=linux_secure
+    | search exe="/tmp/*" OR exe="/usr/bin/*"
+    | stats count by host, user, exe, comm
 
 ### Windows – Masqueraded Process Detection
-index=windows_index EventCode=4688
-| search New_Process_Name="*svchost*" AND NOT New_Process_Name="*System32*"
-| table _time Account_Name New_Process_Name Creator_Process_Name Process_Command_Line
+
+    index=windows_index EventCode=4688
+    | search New_Process_Name="*svchost*" AND NOT New_Process_Name="*System32*"
+    | table _time Account_Name New_Process_Name Creator_Process_Name Process_Command_Line
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
