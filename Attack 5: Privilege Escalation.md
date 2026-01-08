@@ -50,6 +50,8 @@ The attacker logged in as a standard user (lucy) via SSH and escalated privilege
     ssh lucy@10.178.180.79
     sudo /bin/bash
 
+--- 
+
 ## Logs Generated
 ### Windows – Raw Log Output
 
@@ -89,6 +91,8 @@ The attacker logged in as a standard user (lucy) via SSH and escalated privilege
     2025-12-25T11:33:20.914699+05:30 lucifer-VirtualBox sudo:
     pam_unix(sudo:session): session opened for user root(uid=0) by lucy(uid=1002)
 
+--- 
+
 ## Log Explanation
 ### Windows
 
@@ -117,6 +121,8 @@ These logs confirm:
 - Root session creation
 - Privilege escalation from normal user to root
 
+--- 
+
 ## Detection Logic (Splunk SPL)
 ### Windows – Privilege Escalation Detection
 
@@ -128,6 +134,8 @@ These logs confirm:
 
     index=ubuntu_index sourcetype=linux_secure "session opened for user root"
     | stats count by user, host, src_ip
+
+--- 
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
@@ -145,6 +153,8 @@ These logs confirm:
 - Root shell execution
 - Privilege escalation followed by lateral movement or persistence
 
+--- 
+
 ## Severity Assessment
 
 | Metric               | Value  |
@@ -154,6 +164,8 @@ These logs confirm:
 | Impact Potential     | High   |
 | Privilege Required   | Low    |
 | Detection Confidence | High   |
+
+--- 
 
 ## Analysis
 
@@ -165,9 +177,13 @@ These logs confirm:
   - Excessive Windows group memberships
   - Misconfigured sudoers rules
 
+--- 
+
 ## SOC Conclusion
 
 This simulation demonstrates successful privilege escalation on both Windows and Ubuntu systems. The generated logs provide high-confidence indicators that can be reliably detected using SIEM correlation. Detecting privilege escalation early is critical, as it often precedes lateral movement, persistence, and data exfiltration.
+
+---
 
 ## Mitigation & Response
 ### Windows
