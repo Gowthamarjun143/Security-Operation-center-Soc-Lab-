@@ -125,14 +125,12 @@ This log confirms failed graphical login attempts processed through PAM authenti
 ## Detection Logic (Splunk SPL)
 
 ### Windows – Failed Interactive Logons
-        
+---         
     index=* sourcetype="WinEventLog:Security" EventCode=4625 Logon_Type=2
     | stats count by Account_Name, Failure_Reason, host
 
---- 
-
 ### Ubuntu – PAM Authentication Failures
-
+--- 
     index=ubuntu_index sourcetype=linux_secure "authentication failure"
     | stats count by user, process, host
 
