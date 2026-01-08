@@ -58,22 +58,22 @@ The authentication succeeded, resulting in remote desktop access, privilege usag
 ## Logs Generated
 ### Ubuntu – Raw Log Output
 
-2025-12-24T14:29:55.845797+05:30 lucifer-VirtualBox sshd[3737]:
-Connection from 10.178.180.19 port 33960 on 10.178.180.79 port 22
+    2025-12-24T14:29:55.845797+05:30 lucifer-VirtualBox sshd[3737]:
+    Connection from 10.178.180.19 port 33960 on 10.178.180.79 port 22
 
-2025-12-24T14:29:58.197710+05:30 lucifer-VirtualBox sshd[3737]:
-Accepted password for lucifer from 10.178.180.19 port 33960 ssh2
+    2025-12-24T14:29:58.197710+05:30 lucifer-VirtualBox sshd[3737]:
+    Accepted password for lucifer from 10.178.180.19 port 33960 ssh2
 
-2025-12-24T14:29:58.200150+05:30 lucifer-VirtualBox sshd[3737]:
-pam_unix(sshd:session): session opened for user lucifer(uid=1000)
+    2025-12-24T14:29:58.200150+05:30 lucifer-VirtualBox sshd[3737]:
+    pam_unix(sshd:session): session opened for user lucifer(uid=1000)
 
-2025-12-24T14:30:01.148302+05:30 lucifer-VirtualBox CRON[3792]:
-pam_unix(cron:session): session opened for user root(uid=0)
+    2025-12-24T14:30:01.148302+05:30 lucifer-VirtualBox CRON[3792]:
+    pam_unix(cron:session): session opened for user root(uid=0)
 
-2025-12-24T14:30:01.160131+05:30 lucifer-VirtualBox CRON[3792]:
-pam_unix(cron:session): session closed for user root
+    2025-12-24T14:30:01.160131+05:30 lucifer-VirtualBox CRON[3792]:
+    pam_unix(cron:session): session closed for user root
 
-#### Ubuntu – Log Explanation
+### Ubuntu – Log Explanation
 
 - Log Files: /var/log/auth.log, /var/log/syslog
 - Services: sshd, cron
@@ -86,14 +86,14 @@ These logs confirm successful remote authentication using valid credentials, fol
 
 ### Windows – Raw Log Output
 
-EventCode=4624   (Successful Logon)
-EventCode=4672   (Special Privileges Assigned)
-EventCode=4673   (Sensitive Privilege Use)
+    EventCode=4624   (Successful Logon)
+    EventCode=4672   (Special Privileges Assigned)
+    EventCode=4673   (Sensitive Privilege Use)
 EventCode=4688   (New Process Created)
 
 Multiple privilege usage and process creation events were recorded shortly after successful authentication.
 
-#### Windows – Log Explanation
+### Windows – Log Explanation
 
 - Event ID 4624: Successful logon
 - Event ID 4672: Special privileges assigned to new logon
@@ -108,14 +108,14 @@ These events indicate that a valid user account logged in remotely and executed 
 ## Detection Logic (Splunk SPL)
 ### Ubuntu – Successful SSH Login Detection
 
-index=ubuntu_index sourcetype=linux_secure "Accepted password"
-| stats count by user, src_ip, host
+    index=ubuntu_index sourcetype=linux_secure "Accepted password"
+    | stats count by user, src_ip, host
 
-### Windows – Privileged Login and Activity Detection
+## Windows – Privileged Login and Activity Detection
 
-index=windows_index sourcetype="WinEventLog:Security"
-(EventCode=4624 OR EventCode=4672 OR EventCode=4673 OR EventCode=4688)
-| stats count by Account_Name, EventCode, host
+    index=windows_index sourcetype="WinEventLog:Security"
+    (EventCode=4624 OR EventCode=4672 OR EventCode=4673 OR EventCode=4688)
+    | stats count by Account_Name, EventCode, host
 
 ## Alert Logic (SOC Use Case)
 
@@ -125,7 +125,6 @@ index=windows_index sourcetype="WinEventLog:Security"
 - Occurring within a short time window (≤ 10 minutes)
 
 ### Alert Classification:
-
 - Compromised Account / Valid Credential Abuse
 - Escalate if root-level or administrator-level actions are detected
 
