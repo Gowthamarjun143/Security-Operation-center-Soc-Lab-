@@ -55,19 +55,19 @@ Multiple authentication attempts were made, resulting in SSH rejecting the user 
 ## Logs Generated
 ### Windows – Raw Log Output
 
-EventCode=4625
-Logon Type: 3
-Account Name: admin_test
-Source Network Address: 10.178.180.19
-Workstation Name: kali
-Failure Reason: Unknown user name or bad password
-Sub Status: 0xC0000064
+    EventCode=4625
+    Logon Type: 3
+    Account Name: admin_test
+    Source Network Address: 10.178.180.19
+    Workstation Name: kali
+    Failure Reason: Unknown user name or bad password
+    Sub Status: 0xC0000064
 
-EventCode=4776
-Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0
-Logon Account: admin_test
-Source Workstation: kali
-Error Code: 0xC0000064
+    EventCode=4776
+    Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0
+    Logon Account: admin_test
+    Source Workstation: kali
+    Error Code: 0xC0000064
 
 #### Windows – Log Explanation
 
@@ -83,20 +83,20 @@ These events confirm that Windows attempted to validate a non-existent username,
 
 ### Ubuntu – Raw Log Output
 
-2025-12-24T15:11:06.543550+05:30 lucifer-VirtualBox sshd[4178]:
-Connection from 10.178.180.19 port 40488 on 10.178.180.79 port 22
+    2025-12-24T15:11:06.543550+05:30 lucifer-VirtualBox sshd[4178]:
+    Connection from 10.178.180.19 port 40488 on 10.178.180.79 port 22
 
-2025-12-24T15:11:06.657213+05:30 lucifer-VirtualBox sshd[4178]:
-Invalid user invaliduser from 10.178.180.19 port 40488
+    2025-12-24T15:11:06.657213+05:30 lucifer-VirtualBox sshd[4178]:
+    Invalid user invaliduser from 10.178.180.19 port 40488
 
-2025-12-24T15:11:09.116328+05:30 lucifer-VirtualBox sshd[4178]:
-Failed none for invalid user invaliduser from 10.178.180.19 port 40488 ssh2
+    2025-12-24T15:11:09.116328+05:30 lucifer-VirtualBox sshd[4178]:
+    Failed none for invalid user invaliduser from 10.178.180.19 port 40488 ssh2
 
-2025-12-24T15:11:10.183079+05:30 lucifer-VirtualBox sshd[4178]:
-Failed password for invalid user invaliduser from 10.178.180.19 port 40488 ssh2
+    2025-12-24T15:11:10.183079+05:30 lucifer-VirtualBox sshd[4178]:
+    Failed password for invalid user invaliduser from 10.178.180.19 port 40488 ssh2
 
-2025-12-24T15:11:10.778125+05:30 lucifer-VirtualBox sshd[4178]:
-Connection closed by invalid user invaliduser 10.178.180.19 port 40488 [preauth]
+    2025-12-24T15:11:10.778125+05:30 lucifer-VirtualBox sshd[4178]:
+    Connection closed by invalid user invaliduser 10.178.180.19 port 40488 [preauth]
 
 #### Ubuntu – Log Explanation
 
@@ -112,16 +112,15 @@ These logs clearly indicate SSH-based account enumeration by testing invalid use
 ## Detection Logic (Splunk SPL)
 ### Windows – Account Enumeration Detection
 
-index=windows_index sourcetype="WinEventLog:Security"
-(EventCode=4625 OR EventCode=4776)
-| where Sub_Status="0xC0000064" OR Error_Code="0xC0000064"
-| stats count by Account_Name, Source_Network_Address, host
+    index=windows_index sourcetype="WinEventLog:Security"
+    (EventCode=4625 OR EventCode=4776)
+    | where Sub_Status="0xC0000064" OR Error_Code="0xC0000064"
+    | stats count by Account_Name, Source_Network_Address, host
 
 ### Ubuntu – SSH Invalid User Detection
 
-index=ubuntu_index sourcetype=linux_secure "Invalid user"
-| stats count by user, src_ip, host
-
+    index=ubuntu_index sourcetype=linux_secure "Invalid user"
+    | stats count by user, src_ip, host
 
 ## Alert Logic (SOC Use Case)
 
