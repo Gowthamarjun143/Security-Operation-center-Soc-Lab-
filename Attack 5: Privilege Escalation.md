@@ -53,41 +53,41 @@ The attacker logged in as a standard user (lucy) via SSH and escalated privilege
 ## Logs Generated
 ### Windows – Raw Log Output
 
-Event ID 4624 – Successful Logon
-EventCode=4624
-Logon Type: 2
-Account Name: lowuser
-Elevated Token: No
-Source Network Address: ::1
-Linked Logon ID: 0x637BE1
+    Event ID 4624 – Successful Logon
+    EventCode=4624
+    Logon Type: 2
+    Account Name: lowuser
+    Elevated Token: No
+    Source Network Address: ::1
+    Linked Logon ID: 0x637BE1
 
-Event ID 4672 – Special Privileges Assigned
-EventCode=4672
-Account Name: Gowtham
-Privileges:
-SeSecurityPrivilege
-SeTakeOwnershipPrivilege
-SeLoadDriverPrivilege
-SeBackupPrivilege
-SeRestorePrivilege
-SeDebugPrivilege
-SeSystemEnvironmentPrivilege
-SeImpersonatePrivilege
-SeDelegateSessionUserImpersonatePrivilege
+    Event ID 4672 – Special Privileges Assigned
+    EventCode=4672
+    Account Name: Gowtham
+    Privileges:
+    SeSecurityPrivilege
+    SeTakeOwnershipPrivilege
+    SeLoadDriverPrivilege
+    SeBackupPrivilege
+    SeRestorePrivilege
+    SeDebugPrivilege
+    SeSystemEnvironmentPrivilege
+    SeImpersonatePrivilege
+    SeDelegateSessionUserImpersonatePrivilege
 
-Event ID 4688 – Process Creation (Elevated)
-EventCode=4688
-New Process Name: C:\Windows\System32\cmd.exe
-Creator Process Name: C:\Windows\System32\runas.exe
-Token Elevation Type: %%1938
-Mandatory Label: S-1-16-8192
+    Event ID 4688 – Process Creation (Elevated)
+    EventCode=4688
+    New Process Name: C:\Windows\System32\cmd.exe
+    Creator Process Name: C:\Windows\System32\runas.exe
+    Token Elevation Type: %%1938
+    Mandatory Label: S-1-16-8192
 
 ### Ubuntu – Raw Log Output
-2025-12-25T11:33:20.912649+05:30 lucifer-VirtualBox sudo:
-lucy : TTY=pts/0 ; PWD=/home/lucy ; USER=root ; COMMAND=/bin/bash
+    2025-12-25T11:33:20.912649+05:30 lucifer-VirtualBox sudo:
+    lucy : TTY=pts/0 ; PWD=/home/lucy ; USER=root ; COMMAND=/bin/bash
 
-2025-12-25T11:33:20.914699+05:30 lucifer-VirtualBox sudo:
-pam_unix(sudo:session): session opened for user root(uid=0) by lucy(uid=1002)
+    2025-12-25T11:33:20.914699+05:30 lucifer-VirtualBox sudo:
+    pam_unix(sudo:session): session opened for user root(uid=0) by lucy(uid=1002)
 
 ## Log Explanation
 ### Windows
@@ -119,13 +119,15 @@ These logs confirm:
 
 ## Detection Logic (Splunk SPL)
 ### Windows – Privilege Escalation Detection
-index=windows_index sourcetype="WinEventLog:Security"
-(EventCode=4672 OR EventCode=4688)
-| stats count by Account_Name, New_Process_Name, Creator_Process_Name, host
+
+    index=windows_index sourcetype="WinEventLog:Security"
+    (EventCode=4672 OR EventCode=4688)
+    | stats count by Account_Name, New_Process_Name, Creator_Process_Name, host
 
 ### Ubuntu – Sudo Privilege Escalation Detection
-index=ubuntu_index sourcetype=linux_secure "session opened for user root"
-| stats count by user, host, src_ip
+
+    index=ubuntu_index sourcetype=linux_secure "session opened for user root"
+    | stats count by user, host, src_ip
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
