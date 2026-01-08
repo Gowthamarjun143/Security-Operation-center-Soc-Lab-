@@ -52,6 +52,8 @@ The attacker attempted to authenticate via SSH using an invalid user (invaliduse
 
 Multiple authentication attempts were made, resulting in SSH rejecting the user during the pre-authentication phase.
 
+--- 
+
 ## Logs Generated
 ### Windows – Raw Log Output
 
@@ -81,6 +83,8 @@ Multiple authentication attempts were made, resulting in SSH rejecting the user 
 
 These events confirm that Windows attempted to validate a non-existent username, clearly indicating account enumeration activity.
 
+--- 
+
 ### Ubuntu – Raw Log Output
 
     2025-12-24T15:11:06.543550+05:30 lucifer-VirtualBox sshd[4178]:
@@ -109,6 +113,8 @@ These events confirm that Windows attempted to validate a non-existent username,
 
 These logs clearly indicate SSH-based account enumeration by testing invalid usernames.
 
+--- 
+
 ## Detection Logic (Splunk SPL)
 ### Windows – Account Enumeration Detection
 
@@ -122,6 +128,8 @@ These logs clearly indicate SSH-based account enumeration by testing invalid use
     index=ubuntu_index sourcetype=linux_secure "Invalid user"
     | stats count by user, src_ip, host
 
+--- 
+
 ## Alert Logic (SOC Use Case)
 
 ### Trigger Conditions:
@@ -133,6 +141,8 @@ These logs clearly indicate SSH-based account enumeration by testing invalid use
 - Account Enumeration / Reconnaissance
 - Escalate if followed by brute-force or credential-stuffing attempts
 
+--- 
+
 ### Severity Assessment
 
 | Metric             | Value  |
@@ -141,6 +151,8 @@ These logs clearly indicate SSH-based account enumeration by testing invalid use
 | Attack Complexity  | Low    |
 | Impact Potential   | Medium |
 | Privilege Required | None   |
+
+--- 
 
 ## Detection Confidence
 
@@ -152,6 +164,8 @@ Very High
 - Clear protocol-level responses
 - Low false-positive rate for Invalid user and 0xC0000064 patterns
 
+--- 
+
 ## Analysis
 
 - Account enumeration focuses on discovering valid usernames rather than guessing passwords.
@@ -160,9 +174,13 @@ Very High
 - Enumeration significantly lowers attacker effort for subsequent brute-force or credential-stuffing attacks.
 - The activity originated externally from Kali, increasing overall risk.
 
+--- 
+
 ## SOC Conclusion
 
 This simulation successfully demonstrates account enumeration techniques against both Windows and Linux systems. The logs provide clear indicators that attackers can leverage to discover valid users. Early detection enables SOC teams to block reconnaissance activity before credential-based attacks escalate.
+
+--- 
 
 ## Mitigation & Response
 
