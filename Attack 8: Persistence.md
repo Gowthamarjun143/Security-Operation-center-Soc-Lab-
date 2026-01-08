@@ -57,32 +57,32 @@ The attacker authenticated remotely using valid credentials and created a schedu
 
 ## Logs Generated
 ### Ubuntu – Raw Logs
-2025-12-30T17:09:50.404534+05:30 lucifer-VirtualBox sshd[3795]:
-Accepted key RSA SHA256:/bhKYhCChYNBXmba4uaI12Do3kb/Ldgwy50k69VlmMw
-found at /home/lucifer/.ssh/authorized_keys:1
+    2025-12-30T17:09:50.404534+05:30 lucifer-VirtualBox sshd[3795]:
+    Accepted key RSA SHA256:/bhKYhCChYNBXmba4uaI12Do3kb/Ldgwy50k69VlmMw
+    found at /home/lucifer/.ssh/authorized_keys:1
 
-2025-12-30T17:09:50.433798+05:30 lucifer-VirtualBox sshd[3795]:
-Accepted publickey for lucifer from 10.178.180.19 port 56412 ssh2
+    2025-12-30T17:09:50.433798+05:30 lucifer-VirtualBox sshd[3795]:
+    Accepted publickey for lucifer from 10.178.180.19 port 56412 ssh2
 
-type=USER_LOGIN msg=audit(1767094790.649:364):
-exe="/usr/sbin/sshd" acct="lucifer" addr=10.178.180.19 res=success
+    type=USER_LOGIN msg=audit(1767094790.649:364):
+    exe="/usr/sbin/sshd" acct="lucifer" addr=10.178.180.19 res=success
 
 ### Windows – Raw Logs
-EventCode=4624
-Logon Type: 3
-Account Name: Gowtham
-Authentication Package: NTLM
-Source Network Address: 10.178.180.19
-Elevated Token: Yes
+    EventCode=4624
+    Logon Type: 3
+    Account Name: Gowtham
+    Authentication Package: NTLM
+    Source Network Address: 10.178.180.19
+    Elevated Token: Yes
 
-EventCode=4672
-Message: Special privileges assigned to new logon
-Privileges: SeDebugPrivilege, SeImpersonatePrivilege, SeTakeOwnershipPrivilege
+    EventCode=4672
+    Message: Special privileges assigned to new logon
+    Privileges: SeDebugPrivilege, SeImpersonatePrivilege, SeTakeOwnershipPrivilege
 
-EventCode=4688
-New Process Name: C:\Windows\System32\schtasks.exe
-Process Command Line: schtasks /query /tn WindowsUpdateCheck
-Creator Process Name: C:\Windows\System32\cmd.exe
+    EventCode=4688
+    New Process Name: C:\Windows\System32\schtasks.exe
+    Process Command Line: schtasks /query /tn WindowsUpdateCheck
+    Creator Process Name: C:\Windows\System32\cmd.exe
 
 ## Log Explanation
 ### Ubuntu
@@ -104,14 +104,14 @@ Creator Process Name: C:\Windows\System32\cmd.exe
 
 ## Detection Logic (Splunk SPL)
 ### Ubuntu – SSH Key-Based Persistence
-index=linux_index sourcetype=linux_secure
-| search "Accepted publickey"
-| table _time host user src
+    index=linux_index sourcetype=linux_secure
+    | search "Accepted publickey"
+    | table _time host user src
 
 ### Windows – Scheduled Task Persistence
-index=windows_index EventCode=4688
-| search Process_Command_Line="*schtasks*create*"
-| table _time Account_Name New_Process_Name Process_Command_Line
+    index=windows_index EventCode=4688
+    | search Process_Command_Line="*schtasks*create*"
+    | table _time Account_Name New_Process_Name Process_Command_Line
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
