@@ -63,18 +63,17 @@ Although a full RDP session was not established, multiple credential validation 
 ## Logs Generated
 ## Ubuntu – Raw Log Output
 
+    2025-12-24T12:11:03.859709+05:30 lucifer-VirtualBox sshd[4169]:
+    Failed password for lucifer from 10.164.231.19 port 57208 ssh2
 
-2025-12-24T12:11:03.859709+05:30 lucifer-VirtualBox sshd[4169]:
-Failed password for lucifer from 10.164.231.19 port 57208 ssh2
+    2025-12-24T12:11:05.531843+05:30 lucifer-VirtualBox sshd[4169]:
+    PAM 1 more authentication failure; rhost=10.164.231.19 user=lucifer
 
-2025-12-24T12:11:05.531843+05:30 lucifer-VirtualBox sshd[4169]:
-PAM 1 more authentication failure; rhost=10.164.231.19 user=lucifer
+    2025-12-24T12:10:57.869375+05:30 lucifer-VirtualBox sshd[4169]: 
+    pam_unix(sshd:auth): authentication failure; rhost=10.164.231.19 user=lucifer
 
-2025-12-24T12:10:57.869375+05:30 lucifer-VirtualBox sshd[4169]:
-pam_unix(sshd:auth): authentication failure; rhost=10.164.231.19 user=lucifer
-
-2025-12-24T12:10:57.786048+05:30 lucifer-VirtualBox sshd[4169]:
-Connection from 10.164.231.19 port 57208 on 10.164.231.79 port 22
+    2025-12-24T12:10:57.786048+05:30 lucifer-VirtualBox sshd[4169]:
+    Connection from 10.164.231.19 port 57208 on 10.164.231.79 port 22
 
 ### Ubuntu – Log Explanation
 
@@ -89,19 +88,19 @@ These logs confirm repeated failed SSH login attempts originating from a single 
 
 ## Windows – Raw Log Output
 
-EventCode=4625
-Logon Type: 3
-Account Name: gowtham
-Failure Reason: Unknown user name or bad password
-Source Network Address: 10.178.180.19
-Authentication Package: NTLM
-Keywords: Audit Failure
+    EventCode=4625
+    Logon Type: 3
+    Account Name: gowtham
+    Failure Reason: Unknown user name or bad password
+    Source Network Address: 10.178.180.19
+    Authentication Package: NTLM
+    Keywords: Audit Failure
 
-EventCode=4776
-Logon Account: gowtham
-Source Workstation: kali
-Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0
-Error Code: 0xC000006A
+    EventCode=4776
+    Logon Account: gowtham
+    Source Workstation: kali
+    Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0
+    Error Code: 0xC000006A
 
 ### Windows – Log Explanation
 - Event ID: 4625
