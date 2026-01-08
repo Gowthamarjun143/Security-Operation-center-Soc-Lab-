@@ -44,6 +44,7 @@ The attacker initiated an SSH connection from Kali to the Ubuntu host using vali
 #### Command Executed
 
     ssh lucifer@10.178.180.79 "uname -a"
+
 Observed Behavior:
 - Successful remote authentication
 - Session creation
@@ -59,7 +60,6 @@ Post-authentication, a test command created a file to confirm remote execution.
     impacket-wmiexec Gowtham:7774@10.178.180.234
     cmd.exe /c echo LATERAL_MOVEMENT_TEST > C:\Windows\Temp\lm_test.txt
 
-
 Observed Behavior:
 - SMB share enumeration
 - Remote command execution
@@ -67,34 +67,34 @@ Observed Behavior:
 
 ## Logs Generated
 ### Ubuntu – Raw Logs
-2025-12-30T10:54:34.074555+05:30 lucifer-VirtualBox sshd[5224]: 
-Connection from 10.178.180.19 port 47014 on 10.178.180.79 port 22
+    2025-12-30T10:54:34.074555+05:30 lucifer-VirtualBox sshd[5224]: 
+    Connection from 10.178.180.19 port 47014 on 10.178.180.79 port 22
 
-2025-12-30T10:54:36.451469+05:30 lucifer-VirtualBox sshd[5224]: 
-Accepted password for lucifer from 10.178.180.19 port 47014 ssh2
+    2025-12-30T10:54:36.451469+05:30 lucifer-VirtualBox sshd[5224]: 
+    Accepted password for lucifer from 10.178.180.19 port 47014 ssh2
 
-type=USER_AUTH msg=audit(1767072276.421:427): 
-exe="/usr/sbin/sshd" acct="lucifer" addr=10.178.180.19 res=success
+    type=USER_AUTH msg=audit(1767072276.421:427): 
+    exe="/usr/sbin/sshd" acct="lucifer" addr=10.178.180.19 res=success
 
-type=USER_START msg=audit(1767072276.809:431): 
-op=PAM:session_open acct="lucifer" exe="/usr/sbin/sshd" res=success
+    type=USER_START msg=audit(1767072276.809:431): 
+    op=PAM:session_open acct="lucifer" exe="/usr/sbin/sshd" res=success
 
 ### Windows – Raw Logs
-EventCode=4624
-Logon Type: 3
-Authentication Package: NTLM
-Account Name: Gowtham
-Source Network Address: 10.178.180.19
-Elevated Token: Yes
+    EventCode=4624
+    Logon Type: 3
+    Authentication Package: NTLM
+    Account Name: Gowtham
+    Source Network Address: 10.178.180.19
+    Elevated Token: Yes
 
-EventCode=4672
-Message: Special privileges assigned to new logon
-Privileges: SeDebugPrivilege, SeImpersonatePrivilege, SeTakeOwnershipPrivilege
+    EventCode=4672
+    Message: Special privileges assigned to new logon
+    Privileges: SeDebugPrivilege, SeImpersonatePrivilege, SeTakeOwnershipPrivilege
 
-EventCode=4688
-New Process Name: C:\Windows\System32\cmd.exe
-Process Command Line: cmd.exe /c echo LATERAL_MOVEMENT_TEST
-Creator Process Name: C:\Windows\System32\cmd.exe
+    EventCode=4688
+    New Process Name: C:\Windows\System32\cmd.exe
+    Process Command Line: cmd.exe /c echo LATERAL_MOVEMENT_TEST
+    Creator Process Name: C:\Windows\System32\cmd.exe
 
 ## Log Explanation
 ### Ubuntu
@@ -116,14 +116,14 @@ Creator Process Name: C:\Windows\System32\cmd.exe
 
 ## Detection Logic (Splunk SPL)
 ### Ubuntu – SSH Lateral Movement
-index=linux_index sourcetype=linux_secure OR sourcetype=linux_audit
-| search exe="/usr/sbin/sshd" AND res=success
-| stats count by host, acct, addr
+    index=linux_index sourcetype=linux_secure OR sourcetype=linux_audit
+    | search exe="/usr/sbin/sshd" AND res=success
+    | stats count by host, acct, addr
 
 ### Windows – SMB/WMI Lateral Movement
-index=windows_index (EventCode=4624 OR EventCode=4672 OR EventCode=4688)
-| search Source_Network_Address=10.178.180.19
-| table _time EventCode Account_Name Source_Network_Address New_Process_Name
+    index=windows_index (EventCode=4624 OR EventCode=4672 OR EventCode=4688)
+    | search Source_Network_Address=10.178.180.19
+    | table _time EventCode Account_Name Source_Network_Address New_Process_Name
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
