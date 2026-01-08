@@ -55,6 +55,8 @@ The attacker authenticated remotely using valid credentials and created a schedu
     impacket-wmiexec Gowtham:7774@10.178.180.234 \
     "schtasks /create /sc onlogon /tn WindowsUpdateCheck /tr cmd.exe /f"
 
+--- 
+
 ## Logs Generated
 ### Ubuntu – Raw Logs
     2025-12-30T17:09:50.404534+05:30 lucifer-VirtualBox sshd[3795]:
@@ -84,6 +86,8 @@ The attacker authenticated remotely using valid credentials and created a schedu
     Process Command Line: schtasks /query /tn WindowsUpdateCheck
     Creator Process Name: C:\Windows\System32\cmd.exe
 
+--- 
+
 ## Log Explanation
 ### Ubuntu
 
@@ -102,6 +106,8 @@ The attacker authenticated remotely using valid credentials and created a schedu
 - Event ID 4688: Execution of schtasks.exe with a task named WindowsUpdateCheck
 - Security Impact: Task executes on logon, enabling persistence after reboot or logoff, mimicking legitimate Windows services.
 
+--- 
+
 ## Detection Logic (Splunk SPL)
 ### Ubuntu – SSH Key-Based Persistence
     index=linux_index sourcetype=linux_secure
@@ -112,6 +118,8 @@ The attacker authenticated remotely using valid credentials and created a schedu
     index=windows_index EventCode=4688
     | search Process_Command_Line="*schtasks*create*"
     | table _time Account_Name New_Process_Name Process_Command_Line
+
+--- 
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
@@ -126,6 +134,8 @@ The attacker authenticated remotely using valid credentials and created a schedu
 - Unauthorized or disguised task names (e.g., mimicking Windows updates)
 - Recurrent remote logins using new keys
 
+--- 
+
 ## Severity Assessment
 
 | Metric               | Value             |
@@ -135,6 +145,8 @@ The attacker authenticated remotely using valid credentials and created a schedu
 | Impact Potential     | High              |
 | Privilege Required   | Valid credentials |
 | Detection Confidence | High              |
+
+--- 
 
 ## Analysis
 
@@ -147,11 +159,15 @@ The attacker authenticated remotely using valid credentials and created a schedu
   - T1053.005 – Scheduled Task / Job
   - T1021.004 – Remote Services (SSH)
 
+--- 
+
 ## SOC Conclusion
 
 Attack 08 successfully established persistence on both Ubuntu and Windows systems.
 Telemetry captured key indicators: authentication method changes, administrative privilege use, and persistence artifact creation.
 This enables forensic reconstruction and immediate SOC response.
+
+--- 
 
 ## Mitigation & Response
 
