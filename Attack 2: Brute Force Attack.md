@@ -103,13 +103,13 @@ These logs confirm repeated failed SSH login attempts originating from a single 
     Error Code: 0xC000006A
 
 ### Windows – Log Explanation
+
 - Event ID: 4625
 - Log Source: WinEventLog:Security
 - Logon Type: 3 (Network)
 - Failure Reason: Bad password
 - Authentication Package: NTLM
 - Source IP / Workstation: Kali (external attacker)
-
 - Event ID: 4776
 - Task Category: Credential Validation
 - Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0
