@@ -54,6 +54,8 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
     wevtutil cl Security
     wevtutil cl System
 
+--- 
+
 ## Raw Logs
 ### Ubuntu – Raw Logs
     type=USER_CMD msg=audit(1767183111.412:367):
@@ -94,6 +96,8 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
     Process Command Line: wevtutil cl System
     Creator Process Name: C:\Windows\System32\cmd.exe
 
+--- 
+
 ## Log Explanation
 ### Ubuntu
 
@@ -111,6 +115,8 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
 - Event ID 4688: wevtutil.exe executed from cmd.exe with arguments confirming log clearing
 - Conclusion: Logs confirm tampering using native Windows utilities with administrative privileges, erasing audit trails.
 
+--- 
+
 ## Splunk Detection Queries
 ### Ubuntu
     index=linux_index sourcetype=linux_audit
@@ -120,6 +126,8 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
 ### Windows
     index=windows_index EventCode IN (1102,104)
     | table _time host Account_Name EventCode Message
+
+--- 
 
 ## Alert Logic (SOC Use Case)
 ### Trigger Conditions
@@ -134,6 +142,8 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
 - Repeated log clearing within short timeframes
 - Occurrence immediately following sensitive activity (e.g., privilege escalation, lateral movement)
 
+--- 
+
 ## Severity Assessment
 
 | Metric               | Value              |
@@ -143,6 +153,8 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
 | Impact Potential     | High               |
 | Privilege Required   | Root/Administrator |
 | Detection Confidence | High               |
+
+--- 
 
 ## Analysis
 
@@ -154,10 +166,14 @@ Attacker authenticated remotely using administrative credentials and cleared Sec
   - T1070.002 – Clear Linux Logs
   - T1070.001 – Clear Windows Event Logs
 
+--- 
+
 ## SOC Conclusion
 
 Attack 09 successfully demonstrates log tampering on both Ubuntu and Windows systems.
 Audit and system-level logs still provide actionable evidence despite attempts to erase traces, allowing SOC teams to detect defense-evasion techniques and reconstruct attack sequences.
+
+---
 
 ## Mitigation & Response
 
