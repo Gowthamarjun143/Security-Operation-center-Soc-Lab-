@@ -129,10 +129,14 @@ This log confirms failed graphical login attempts processed through PAM authenti
     index=* sourcetype="WinEventLog:Security" EventCode=4625 Logon_Type=2
     | stats count by Account_Name, Failure_Reason, host
 
+--- 
+
 ### Ubuntu – PAM Authentication Failures
 
     index=ubuntu_index sourcetype=linux_secure "authentication failure"
     | stats count by user, process, host
+
+--- 
 
 ## Alert Logic (SOC Use Case)
 
@@ -146,6 +150,8 @@ This log confirms failed graphical login attempts processed through PAM authenti
 - Trigger on threshold breach
 - Severity escalated if attempts originate from multiple hosts
 
+--- 
+
 ## Severity Assessment
 
 | Metric                | Value  |
@@ -154,6 +160,8 @@ This log confirms failed graphical login attempts processed through PAM authenti
 | Attack Complexity     | Low    |
 | Impact Potential      | Medium |
 | Privilege Requirement | None   |
+
+--- 
 
 ## Detection Confidence
 
@@ -172,9 +180,13 @@ High
 - Centralized log ingestion into Splunk enables correlation and cross-platform visibility.
 - This attack validates authentication monitoring, alerting logic, and SOC detection readiness.
 
+--- 
+
 ## SOC Conclusion
 
 The simulation successfully demonstrates how failed authentication attempts are detected, analyzed, and correlated in a SOC environment using Splunk. Although the activity originated locally, identical indicators are critical for identifying brute-force attacks, credential abuse, and potential account compromise in enterprise environments.
+
+--- 
 
 ## Mitigation & Response
 
@@ -184,3 +196,4 @@ The simulation successfully demonstrates how failed authentication attempts are 
 - Monitor authentication trends to distinguish user error from malicious behavior.
 - Conduct periodic reviews of authentication logs to identify anomalies and attack patterns.
 
+--- 
