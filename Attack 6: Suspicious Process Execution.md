@@ -65,29 +65,29 @@ Windows Security Event ID 4688 recorded the suspicious process execution.
 ## Logs Generated
 ### Ubuntu – Raw Logs
 
-2025-12-25T18:15:01.963694+05:30 lucifer-VirtualBox CRON[4961]:
-pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+    2025-12-25T18:15:01.963694+05:30 lucifer-VirtualBox CRON[4961]:
+    pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
 
-type=SYSCALL msg=audit(1766666701.961:400):
-arch=c000003e syscall=1 success=yes exit=1
-ppid=744 pid=4961 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0
-comm="cron" exe="/usr/sbin/cron" subj=unconfined
+    type=SYSCALL msg=audit(1766666701.961:400):
+    arch=c000003e syscall=1 success=yes exit=1
+    ppid=744 pid=4961 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0
+    comm="cron" exe="/usr/sbin/cron" subj=unconfined
 
-2025-12-25T18:11:49.130170+05:30 lucifer-VirtualBox sudo:
-lucy : TTY=pts/0 ; PWD=/home/lucy ; USER=root ; COMMAND=/bin/bash
+    2025-12-25T18:11:49.130170+05:30 lucifer-VirtualBox sudo:
+    lucy : TTY=pts/0 ; PWD=/home/lucy ; USER=root ; COMMAND=/bin/bash
 
 ### Windows – Raw Logs
-EventCode=4688
-LogName=Security
-ComputerName=DESKTOP-HFGS62A
-Account Name: Gowtham
-Creator Process Name: C:\Windows\System32\cmd.exe
-New Process Name: C:\Users\Public\svchost-update.exe
-Process Command Line: C:\Users\Public\svchost-update.exe
-Token Elevation Type: %%1937
-Mandatory Label: S-1-16-12288
-Keywords: Audit Success
-Time: 2025-12-25T20:54:42.711+05:30
+    EventCode=4688
+    LogName=Security
+    ComputerName=DESKTOP-HFGS62A
+    Account Name: Gowtham
+    Creator Process Name: C:\Windows\System32\cmd.exe
+    New Process Name: C:\Users\Public\svchost-update.exe
+    Process Command Line: C:\Users\Public\svchost-update.exe
+    Token Elevation Type: %%1937
+    Mandatory Label: S-1-16-12288 
+    Keywords: Audit Success
+    Time: 2025-12-25T20:54:42.711+05:30
 
 ## Log Explanation
 ### Ubuntu
