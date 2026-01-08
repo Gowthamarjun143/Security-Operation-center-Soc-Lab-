@@ -82,7 +82,6 @@ This simulates failed graphical authentication attempts handled by PAM modules.
     Network Information:
     Source Network Address: 127.0.0.1
 
-
 ---
 
 ### Windows – Log Explanation
@@ -106,7 +105,6 @@ This event confirms failed interactive authentication attempts on a local Window
     pam_unix(gdm-password:auth): authentication failure;
     logname= uid=0 euid=0 tty=/dev/tty1 ruser= rhost= user=lucifer
 
-
 ---
 
 ### Ubuntu – Log Explanation
@@ -125,12 +123,12 @@ This log confirms failed graphical login attempts processed through PAM authenti
 ## Detection Logic (Splunk SPL)
 
 ### Windows – Failed Interactive Logons
----         
+        
     index=* sourcetype="WinEventLog:Security" EventCode=4625 Logon_Type=2
     | stats count by Account_Name, Failure_Reason, host
 
 ### Ubuntu – PAM Authentication Failures
---- 
+ 
     index=ubuntu_index sourcetype=linux_secure "authentication failure"
     | stats count by user, process, host
 
