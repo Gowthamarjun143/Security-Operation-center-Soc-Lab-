@@ -1,4 +1,4 @@
-# Attack 3: Compromised Account (Valid Credential Abuse)
+# Attack 03: Compromised Account (Valid Credential Abuse)
 
 ---
 
